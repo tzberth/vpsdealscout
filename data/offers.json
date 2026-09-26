@@ -7,7 +7,7 @@
     "kind": "promotion",
     "offer_url": "https://www.ionos.com/servers/cheap-vps",
     "source_url": "https://www.ionos.com/servers/cheap-vps",
-    "fetched_at": "2026-09-26T12:30:10+00:00"
+    "fetched_at": "2026-09-26T18:28:59+00:00"
   },
   {
     "id": "vps-net",
@@ -17,7 +17,7 @@
     "kind": "promotion",
     "offer_url": "https://www.vps.net/20credit/",
     "source_url": "https://www.vps.net/20credit/",
-    "fetched_at": "2026-09-26T12:30:11+00:00"
+    "fetched_at": "2026-09-26T18:29:00+00:00"
   },
   {
     "id": "ovhcloud-us",
@@ -27,7 +27,7 @@
     "kind": "pricing",
     "offer_url": "https://us.ovhcloud.com/vps/",
     "source_url": "https://us.ovhcloud.com/vps/",
-    "fetched_at": "2026-09-26T12:30:12+00:00"
+    "fetched_at": "2026-09-26T18:29:01+00:00"
   },
   {
     "id": "hetzner-cloud",
@@ -37,7 +37,7 @@
     "kind": "pricing",
     "offer_url": "https://www.hetzner.com/cloud/",
     "source_url": "https://www.hetzner.com/cloud/",
-    "fetched_at": "2026-09-26T12:30:13+00:00"
+    "fetched_at": "2026-09-26T18:29:02+00:00"
   },
   {
     "id": "buyvm",
@@ -47,7 +47,7 @@
     "kind": "pricing",
     "offer_url": "https://buyvm.net/kvm-dedicated-server-slices/",
     "source_url": "https://buyvm.net/kvm-dedicated-server-slices/",
-    "fetched_at": "2026-09-26T12:30:14+00:00"
+    "fetched_at": "2026-09-26T18:29:03+00:00"
   },
   {
     "id": "clouvider",
@@ -57,7 +57,7 @@
     "kind": "pricing",
     "offer_url": "https://console.clouvider.co.uk/products/",
     "source_url": "https://console.clouvider.co.uk/products/",
-    "fetched_at": "2026-09-26T12:30:16+00:00"
+    "fetched_at": "2026-09-26T18:29:05+00:00"
   },
   {
     "id": "hostwinds",
@@ -67,7 +67,7 @@
     "kind": "pricing",
     "offer_url": "https://www.hostwinds.com/vps/linux",
     "source_url": "https://www.hostwinds.com/vps/linux",
-    "fetched_at": "2026-09-26T12:30:16+00:00"
+    "fetched_at": "2026-09-26T18:29:06+00:00"
   },
   {
     "id": "servarica",
@@ -77,7 +77,7 @@
     "kind": "pricing",
     "offer_url": "https://servarica.com/",
     "source_url": "https://servarica.com/",
-    "fetched_at": "2026-09-26T12:30:18+00:00"
+    "fetched_at": "2026-09-26T18:29:08+00:00"
   },
   {
     "id": "servers-com",
@@ -87,7 +87,7 @@
     "kind": "pricing",
     "offer_url": "https://www.servers.com/products/cloud-servers",
     "source_url": "https://www.servers.com/products/cloud-servers",
-    "fetched_at": "2026-09-26T12:30:20+00:00"
+    "fetched_at": "2026-09-26T18:29:10+00:00"
   },
   {
     "id": "cloudcone",
@@ -97,7 +97,7 @@
     "kind": "pricing",
     "offer_url": "https://cloudcone.com/vps/",
     "source_url": "https://cloudcone.com/vps/",
-    "fetched_at": "2026-09-26T12:30:21+00:00"
+    "fetched_at": "2026-09-26T18:29:12+00:00"
   },
   {
     "id": "amazon-lightsail",
@@ -107,7 +107,7 @@
     "kind": "pricing",
     "offer_url": "https://aws.amazon.com/lightsail/pricing/",
     "source_url": "https://aws.amazon.com/lightsail/pricing/",
-    "fetched_at": "2026-09-26T12:30:21+00:00"
+    "fetched_at": "2026-09-26T18:29:12+00:00"
   },
   {
     "id": "serverspace",
@@ -117,6 +117,6 @@
     "kind": "pricing",
     "offer_url": "https://serverspace.io/services/vps-server/",
     "source_url": "https://serverspace.io/services/vps-server/",
-    "fetched_at": "2026-09-26T12:30:25+00:00"
+    "fetched_at": "2026-09-26T18:29:16+00:00"
   }
 ]
