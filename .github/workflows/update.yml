@@ -12,6 +12,7 @@ on:
       - 'config.py'
 jobs:
   refresh:
+    if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[sitemap-only]') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

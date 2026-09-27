@@ -4,6 +4,7 @@
 import html
 import json
 import re
+import argparse
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote
@@ -34,6 +35,30 @@ def write(relative, content):
     path = OUT / relative
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding='utf-8')
+
+
+def reviewed_day(records):
+    dates = [r.get('reviewed_at', '')[:10] for r in records if re.match(r'^\d{4}-\d{2}-\d{2}', r.get('reviewed_at', ''))]
+    if not dates:
+        raise ValueError('No verified review timestamp available for sitemap lastmod')
+    return max(dates)
+
+
+def existing_routes(site):
+    routes = []
+    for index in OUT.rglob('index.html'):
+        rel = index.relative_to(OUT).as_posix()
+        route = '/' if rel == 'index.html' else '/' + rel[:-len('index.html')]
+        routes.append(route)
+    return sorted(set(routes))
+
+
+def write_sitemap(site, routes, lastmod):
+    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for path in routes:
+        sitemap.append(f'<url><loc>https://{esc(site["domain"])}{esc(path)}</loc><lastmod>{lastmod}</lastmod></url>')
+    sitemap.append('</urlset>')
+    write('sitemap.xml', '\n'.join(sitemap))
 
 
 def jsonld(value):
@@ -102,6 +127,9 @@ NOT_FOUND = 'Not found this check'
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--sitemap-only', action='store_true', help='Refresh sitemap from already generated routes without rewriting pages')
+    args = parser.parse_args()
     site, providers = load_config()
     provider_map = {p['name']: p for p in providers}
     data_path = ROOT / 'data' / 'offers.json'
@@ -109,6 +137,11 @@ def main():
     records = [r for r in records if r.get('provider') in provider_map and r.get('source_url') == provider_map[r['provider']]['source']]
     records = [r for r in records if not r.get('valid_until') or r['valid_until'] >= datetime.now().date().isoformat()]
     OUT.mkdir(exist_ok=True)
+    if args.sitemap_only:
+        routes = existing_routes(site)
+        write_sitemap(site, routes, reviewed_day(records))
+        print(f'Updated sitemap only: {len(routes)} existing routes; lastmod {reviewed_day(records)}')
+        return
     cards = ''.join(card(r) for r in records if provider_map[r['provider']].get('mode', 'dual') == 'dual') or '<p class="empty">No verified sources are available yet. Check back after the next update.</p>'
     stores = ''.join(store_card(r) for r in records if provider_map[r['provider']].get('mode', 'dual') == 'single')
     dual_records = [r for r in records if provider_map[r['provider']].get('mode', 'dual') == 'dual']
@@ -223,11 +256,11 @@ def main():
                    price=(f"{esc(r['price'])} {esc(r['currency'])}" if 'price' in r and 'currency' in r else 'See official page')),
             {'@context': 'https://schema.org', '@graph': [
                 service, breadcrumb]}, r['fetched_at'][:10])
-    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for path, lastmod in pages:
-        sitemap.append(f'<url><loc>https://{esc(site["domain"])}{esc(path)}</loc>' + (f'<lastmod>{lastmod}</lastmod>' if lastmod else '') + '</url>')
-    sitemap.append('</urlset>')
-    write('sitemap.xml', '\n'.join(sitemap))
+    # Preserve sitemap routes that already have generated pages but could not be
+    # refreshed this round (for example, a source blocked by robots/TLS failure).
+    routes = {path for path, _ in pages}
+    routes.update(set(existing_routes(site)) - routes)
+    write_sitemap(site, sorted(routes), reviewed_day(records))
     write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: https://{site["domain"]}/sitemap.xml\n')
     print(f'Built {len(pages)} pages from {len(records)} verified sources')
 
