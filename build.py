@@ -68,6 +68,39 @@ def store_card(item):
                   page=f"/providers/{slug(item['provider'])}/", checked=esc(item['fetched_at'][:10]))
 
 
+def offer_material(item):
+    price = (item.get('price_display') or f"{item['price']} {item['currency']}" if item.get('price') and item.get('currency')
+             else item.get('price_display') or item.get('price') or NOT_FOUND)
+    currency = item.get('currency') or NOT_FOUND
+    valid_until = item.get('valid_until') or item.get('valid_until_status') or NOT_FOUND
+    checked = item.get('reviewed_at') or item.get('fetched_at') or NOT_FOUND
+    fields = [
+        ('Offer / plan name', item.get('offer_name') or NOT_FOUND),
+        ('Price', price),
+        ('Currency', currency),
+        ('Conditions', item.get('conditions') or NOT_FOUND),
+        ('Valid until', valid_until),
+        ('Reviewed', checked[:10] if checked != NOT_FOUND else NOT_FOUND),
+        ('Official source', f'<a href="{esc(item["source_url"])}" rel="noopener noreferrer">{esc(item["source_url"])}</a>'),
+    ]
+    rows = ''.join(f'<div><dt>{esc(label)}</dt><dd>{value if label == "Official source" else esc(value)}</dd></div>'
+                   for label, value in fields)
+    return '<section class="feature"><span class="pill">OFFICIAL OFFER / PLAN CHECK</span><h2>Current offer details</h2><dl>' + rows + '</dl></section>'
+
+
+def offer_schema(item):
+    if not item.get('price') or not item.get('currency'):
+        return None
+    result = {'@type': 'Offer', 'url': item.get('offer_url') or item['source_url'],
+              'price': item['price'], 'priceCurrency': item['currency']}
+    if item.get('valid_until'):
+        result['priceValidUntil'] = item['valid_until']
+    return result
+
+
+NOT_FOUND = 'Not found this check'
+
+
 def main():
     site, providers = load_config()
     provider_map = {p['name']: p for p in providers}
@@ -158,10 +191,12 @@ def main():
                 render('store.html', provider=esc(r['provider']), title=esc(r['title']),
                        description=esc(r.get('description') or 'See the official provider page for current terms.'),
                        kind=esc(r['kind'].upper() + ' SOURCE'), source=esc(r['source_url']),
-                       checked=esc(r['fetched_at'][:10])),
+                       checked=esc((r.get('reviewed_at') or r['fetched_at'])[:10]),
+                       offer_material=offer_material(r)),
                 {'@context': 'https://schema.org', '@type': 'Service',
                  'name': f"{r['provider']} VPS hosting", 'provider': {'@type': 'Organization', 'name': r['provider']},
-                 'url': f"https://{site['domain']}{provider_path}"}, r['fetched_at'][:10])
+                 'url': f"https://{site['domain']}{provider_path}",
+                 **({'offers': offer_schema(r)} if offer_schema(r) else {})}, r['fetched_at'][:10])
             continue
         breadcrumb = {'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': f"https://{site['domain']}/"},
@@ -169,22 +204,22 @@ def main():
         add(provider_path, f"{r['provider']} VPS source | {site['brand']}",
             f"Official {r['provider']} VPS source, last checked {r['fetched_at'][:10]}.",
             render('provider.html', provider=esc(r['provider']), title=esc(r['title']), detail=detail_path, kind=esc(r['kind'].upper() + ' SOURCE'),
-                   website=esc(provider['website']), checked=esc(r['fetched_at'][:10])),
+                   website=esc(provider['website']), checked=esc((r.get('reviewed_at') or r['fetched_at'])[:10]),
+                   offer_material=offer_material(r)),
             {'@context': 'https://schema.org', '@graph': [
                 {'@type': 'Service', 'name': f"{r['provider']} VPS hosting", 'provider': {'@type': 'Organization', 'name': r['provider']},
-                 'url': f"https://{site['domain']}{provider_path}"}, breadcrumb]}, r['fetched_at'][:10])
+                 'url': f"https://{site['domain']}{provider_path}",
+                 **({'offers': offer_schema(r)} if offer_schema(r) else {})}, breadcrumb]}, r['fetched_at'][:10])
         service = {'@type': 'Service', 'name': r['title'], 'provider': {'@type': 'Organization', 'name': r['provider']}, 'url': r['source_url']}
-        if 'price' in r and 'currency' in r:
-            offer = {'@type': 'Offer', 'url': r['offer_url'], 'price': r['price'], 'priceCurrency': r['currency']}
-            if r.get('valid_until'):
-                offer['priceValidUntil'] = r['valid_until']
-            service['offers'] = offer
+        if offer_schema(r):
+            service['offers'] = offer_schema(r)
         add(detail_path, f"{r['provider']}: {r['title']} | {site['brand']}",
             f"Official {r['provider']} source. Verify current terms and availability before buying.",
             render('deal.html', provider=esc(r['provider']), title=esc(r['title']), kind=esc(r['kind'].upper() + ' SOURCE'),
                    description=esc(r.get('description') or 'See the provider page for current terms.'),
                    source=esc(r['source_url']), outbound=esc(r['offer_url']),
-                   checked=esc(r['fetched_at'][:10]), provider_page=provider_path,
+                   checked=esc((r.get('reviewed_at') or r['fetched_at'])[:10]), provider_page=provider_path,
+                   offer_material=offer_material(r),
                    price=(f"{esc(r['price'])} {esc(r['currency'])}" if 'price' in r and 'currency' in r else 'See official page')),
             {'@context': 'https://schema.org', '@graph': [
                 service, breadcrumb]}, r['fetched_at'][:10])
