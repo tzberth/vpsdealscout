@@ -176,6 +176,28 @@ def fetch(provider):
     return item
 
 
+def unavailable_record(provider):
+    """Keep a configured page current without claiming an inaccessible source was read."""
+    now = datetime.now(ZoneInfo('Asia/Shanghai')).isoformat(timespec='seconds')
+    return {
+        'id': re.sub(r'[^a-z0-9]+', '-', provider['name'].lower()).strip('-'),
+        'provider': provider['name'],
+        'title': f"{provider['name']} — source check unavailable",
+        'description': NOT_FOUND,
+        'kind': provider['kind'],
+        'offer_url': provider['affiliate'] or provider['source'],
+        'source_url': provider['source'],
+        'fetched_at': now,
+        'reviewed_at': now,
+        'fetch_status': NOT_FOUND,
+        'offer_name': NOT_FOUND,
+        'price_status': NOT_FOUND,
+        'currency_status': NOT_FOUND,
+        'conditions': NOT_FOUND,
+        'valid_until_status': NOT_FOUND,
+    }
+
+
 def main():
     _, providers = load_config()
     existing_path = ROOT / 'data' / 'offers.json'
@@ -186,6 +208,8 @@ def main():
         item = fetch(provider)
         if item:
             results.append(item)
+        elif provider.get('retain'):
+            results.append(unavailable_record(provider))
         elif provider['name'] in previous:
             # Keep the last fetched metadata, but clear offer facts that could not be rechecked.
             stale = dict(previous[provider['name']])

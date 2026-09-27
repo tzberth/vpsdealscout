@@ -33,7 +33,7 @@
   HostUS | https://hostus.us | https://hostus.us/ | | pricing | single
   SSD Nodes | https://www.ssdnodes.com | https://www.ssdnodes.com/ | | pricing | single
   CloudCone | https://cloudcone.com | https://cloudcone.com/vps/ | | pricing | single
-  Amazon Lightsail | https://aws.amazon.com | https://aws.amazon.com/lightsail/pricing/ | | pricing | single
+  Amazon Lightsail | https://aws.amazon.com | https://aws.amazon.com/lightsail/pricing/ | | pricing | single | retain
   Serverspace | https://serverspace.io | https://serverspace.io/services/vps-server/ | | pricing | single
 ::MODULE{FIELDS|title:Extract only verified fields}
   title price currency offer_url valid_until source_url fetched_at

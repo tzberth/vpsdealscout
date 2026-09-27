@@ -129,6 +129,7 @@ NOT_FOUND = 'Not found this check'
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--sitemap-only', action='store_true', help='Refresh sitemap from already generated routes without rewriting pages')
+    parser.add_argument('--provider-only', help='Render one configured provider page and refresh sitemap without rewriting other pages')
     args = parser.parse_args()
     site, providers = load_config()
     provider_map = {p['name']: p for p in providers}
@@ -141,6 +142,27 @@ def main():
         routes = existing_routes(site)
         write_sitemap(site, routes, reviewed_day(records))
         print(f'Updated sitemap only: {len(routes)} existing routes; lastmod {reviewed_day(records)}')
+        return
+    if args.provider_only:
+        provider = provider_map.get(args.provider_only)
+        record = next((r for r in records if r.get('provider') == args.provider_only), None)
+        if not provider or not record or provider.get('mode', 'dual') != 'single':
+            raise SystemExit(f'No retained single-page source record for {args.provider_only}')
+        provider_path = f"/providers/{slug(record['provider'])}/"
+        checked = (record.get('reviewed_at') or record.get('fetched_at') or NOT_FOUND)[:10]
+        page = layout(site, provider_path, f"{record['provider']} VPS source | {site['brand']}",
+                      f"Official {record['provider']} VPS source, last checked {checked}.",
+                      render('store.html', provider=esc(record['provider']), title=esc(record['title']),
+                             description=esc(record.get('description') or 'See the official provider page for current terms.'),
+                             kind=esc(record['kind'].upper() + ' SOURCE'), source=esc(record['source_url']),
+                             checked=esc(checked), offer_material=offer_material(record)),
+                      {'@context': 'https://schema.org', '@type': 'Service',
+                       'name': f"{record['provider']} VPS hosting", 'provider': {'@type': 'Organization', 'name': record['provider']},
+                       'url': f"https://{site['domain']}{provider_path}"})
+        write(provider_path.lstrip('/').rstrip('/') + '/index.html', page)
+        routes = existing_routes(site)
+        write_sitemap(site, routes, reviewed_day(records))
+        print(f'Rendered {provider_path} only; sitemap has {len(routes)} existing routes')
         return
     cards = ''.join(card(r) for r in records if provider_map[r['provider']].get('mode', 'dual') == 'dual') or '<p class="empty">No verified sources are available yet. Check back after the next update.</p>'
     stores = ''.join(store_card(r) for r in records if provider_map[r['provider']].get('mode', 'dual') == 'single')
