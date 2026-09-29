@@ -8,6 +8,7 @@ on:
       - '.ilang/site.ilang'
       - 'scraper.py'
       - 'build.py'
+      - 'verify.py'
       - 'templates/**'
       - 'config.py'
 jobs:

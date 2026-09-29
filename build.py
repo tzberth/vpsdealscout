@@ -80,17 +80,21 @@ def layout(site, path, title, description, body, schema):
                   og_image=esc(f"https://{site['domain']}/og.svg"), body=body, schema=jsonld(schema), year=datetime.now().year)
 
 
+def checked_day(item):
+    return (item.get('reviewed_at') or item.get('fetched_at') or NOT_FOUND)[:10]
+
+
 def card(item):
     page = f"/deals/{slug(item['provider'])}/"
     return render('card.html', provider=esc(item['provider']), title=esc(item['title']), kind=esc(item['kind'].upper() + ' SOURCE'),
                   description=esc(item.get('description') or 'Explore the current terms at the official source.'),
-                  page=page, checked=esc(item['fetched_at'][:10]))
+                  page=page, checked=esc(checked_day(item)))
 
 
 def store_card(item):
     return render('store_card.html', provider=esc(item['provider']), kind=esc(item['kind'].upper() + ' SOURCE'),
                   description=esc(item.get('description') or 'Explore the current terms at the official source.'),
-                  page=f"/providers/{slug(item['provider'])}/", checked=esc(item['fetched_at'][:10]))
+                  page=f"/providers/{slug(item['provider'])}/", checked=esc(checked_day(item)))
 
 
 def offer_material(item):
@@ -179,12 +183,12 @@ def main():
         render('index.html', cards=cards, count=len([r for r in records if provider_map[r['provider']].get('mode', 'dual') == 'dual']), stores=stores,
                store_count=len([r for r in records if provider_map[r['provider']].get('mode', 'dual') == 'single'])),
         {'@context': 'https://schema.org', '@type': 'ItemList', 'itemListElement': list_items},
-        max((r['fetched_at'][:10] for r in records), default=None))
+        max((checked_day(r) for r in records), default=None))
     add('/compare/', f"Compare VPS sources | {site['brand']}",
         'Compare official VPS offer and pricing sources. Check live terms with each provider.',
         render('compare.html', rows=''.join(render('row.html', provider=esc(r['provider']), title=esc(r['title']),
                                            page=f"/deals/{slug(r['provider'])}/", source=esc(r['source_url']),
-                                           checked=esc(r['fetched_at'][:10])) for r in dual_records)),
+                                           checked=esc(checked_day(r))) for r in dual_records)),
         {'@context': 'https://schema.org', '@type': 'ItemList', 'itemListElement': list_items})
     add('/about/', f"About | {site['brand']}",
         f"About {site['brand']} and how it tracks official VPS source pages.",
@@ -242,7 +246,7 @@ def main():
         detail_path = f"/deals/{slug(r['provider'])}/"
         if provider.get('mode', 'dual') == 'single':
             add(provider_path, f"{r['provider']} VPS source | {site['brand']}",
-                f"Official {r['provider']} VPS source, last checked {r['fetched_at'][:10]}.",
+                f"Official {r['provider']} VPS source, last checked {checked_day(r)}.",
                 render('store.html', provider=esc(r['provider']), title=esc(r['title']),
                        description=esc(r.get('description') or 'See the official provider page for current terms.'),
                        kind=esc(r['kind'].upper() + ' SOURCE'), source=esc(r['source_url']),
@@ -251,20 +255,20 @@ def main():
                 {'@context': 'https://schema.org', '@type': 'Service',
                  'name': f"{r['provider']} VPS hosting", 'provider': {'@type': 'Organization', 'name': r['provider']},
                  'url': f"https://{site['domain']}{provider_path}",
-                 **({'offers': offer_schema(r)} if offer_schema(r) else {})}, r['fetched_at'][:10])
+                 **({'offers': offer_schema(r)} if offer_schema(r) else {})}, checked_day(r))
             continue
         breadcrumb = {'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': f"https://{site['domain']}/"},
             {'@type': 'ListItem', 'position': 2, 'name': r['provider'], 'item': f"https://{site['domain']}{provider_path}"}]}
         add(provider_path, f"{r['provider']} VPS source | {site['brand']}",
-            f"Official {r['provider']} VPS source, last checked {r['fetched_at'][:10]}.",
+            f"Official {r['provider']} VPS source, last checked {checked_day(r)}.",
             render('provider.html', provider=esc(r['provider']), title=esc(r['title']), detail=detail_path, kind=esc(r['kind'].upper() + ' SOURCE'),
                    website=esc(provider['website']), checked=esc((r.get('reviewed_at') or r['fetched_at'])[:10]),
                    offer_material=offer_material(r)),
             {'@context': 'https://schema.org', '@graph': [
                 {'@type': 'Service', 'name': f"{r['provider']} VPS hosting", 'provider': {'@type': 'Organization', 'name': r['provider']},
                  'url': f"https://{site['domain']}{provider_path}",
-                 **({'offers': offer_schema(r)} if offer_schema(r) else {})}, breadcrumb]}, r['fetched_at'][:10])
+                 **({'offers': offer_schema(r)} if offer_schema(r) else {})}, breadcrumb]}, checked_day(r))
         service = {'@type': 'Service', 'name': r['title'], 'provider': {'@type': 'Organization', 'name': r['provider']}, 'url': r['source_url']}
         if offer_schema(r):
             service['offers'] = offer_schema(r)
@@ -277,7 +281,7 @@ def main():
                    offer_material=offer_material(r),
                    price=(f"{esc(r['price'])} {esc(r['currency'])}" if 'price' in r and 'currency' in r else 'See official page')),
             {'@context': 'https://schema.org', '@graph': [
-                service, breadcrumb]}, r['fetched_at'][:10])
+                service, breadcrumb]}, checked_day(r))
     # Preserve sitemap routes that already have generated pages but could not be
     # refreshed this round (for example, a source blocked by robots/TLS failure).
     routes = {path for path, _ in pages}
