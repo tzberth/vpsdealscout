@@ -7,7 +7,7 @@
     "kind": "promotion",
     "offer_url": "https://www.ionos.com/servers/cheap-vps",
     "source_url": "https://www.ionos.com/servers/cheap-vps",
-    "fetched_at": "2026-10-01T06:36:19+00:00",
+    "fetched_at": "2026-10-01T12:36:30+00:00",
     "offer_name": "VPS S+ — Save 17%",
     "price_status": "Found",
     "currency_status": "Not found this check",
@@ -15,7 +15,7 @@
     "valid_until_status": "Not found this check",
     "price": "2",
     "price_display": "$2/month",
-    "reviewed_at": "2026-10-01T14:36:19+08:00"
+    "reviewed_at": "2026-10-01T20:36:30+08:00"
   },
   {
     "id": "vps-net",
@@ -25,13 +25,13 @@
     "kind": "promotion",
     "offer_url": "https://www.vps.net/20credit/",
     "source_url": "https://www.vps.net/20credit/",
-    "fetched_at": "2026-10-01T06:36:20+00:00",
+    "fetched_at": "2026-10-01T12:36:31+00:00",
     "offer_name": "20CREDIT — $20 credit when you sign up",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Available on V2 and above products. Terms and conditions apply.",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:20+08:00"
+    "reviewed_at": "2026-10-01T20:36:31+08:00"
   },
   {
     "id": "ovhcloud-us",
@@ -41,7 +41,7 @@
     "kind": "pricing",
     "offer_url": "https://us.ovhcloud.com/vps/",
     "source_url": "https://us.ovhcloud.com/vps/",
-    "fetched_at": "2026-10-01T06:36:21+00:00",
+    "fetched_at": "2026-10-01T12:36:32+00:00",
     "offer_name": "VPS-1",
     "price_status": "Found",
     "currency_status": "Found",
@@ -50,7 +50,7 @@
     "price": "4.54",
     "price_display": "$4.54/month",
     "currency": "USD",
-    "reviewed_at": "2026-10-01T14:36:21+08:00"
+    "reviewed_at": "2026-10-01T20:36:32+08:00"
   },
   {
     "id": "hetzner-cloud",
@@ -60,13 +60,13 @@
     "kind": "pricing",
     "offer_url": "https://www.hetzner.com/cloud/",
     "source_url": "https://www.hetzner.com/cloud/",
-    "fetched_at": "2026-10-01T06:36:22+00:00",
+    "fetched_at": "2026-10-01T12:36:33+00:00",
     "offer_name": "Not found this check",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Not found this check",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:22+08:00"
+    "reviewed_at": "2026-10-01T20:36:33+08:00"
   },
   {
     "id": "buyvm",
@@ -76,13 +76,13 @@
     "kind": "pricing",
     "offer_url": "https://buyvm.net/kvm-dedicated-server-slices/",
     "source_url": "https://buyvm.net/kvm-dedicated-server-slices/",
-    "fetched_at": "2026-10-01T06:36:22+00:00",
+    "fetched_at": "2026-10-01T12:36:34+00:00",
     "offer_name": "Not found this check",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Not found this check",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:22+08:00"
+    "reviewed_at": "2026-10-01T20:36:34+08:00"
   },
   {
     "id": "clouvider",
@@ -92,13 +92,13 @@
     "kind": "pricing",
     "offer_url": "https://console.clouvider.co.uk/products/",
     "source_url": "https://console.clouvider.co.uk/products/",
-    "fetched_at": "2026-10-01T06:36:24+00:00",
+    "fetched_at": "2026-10-01T12:36:36+00:00",
     "offer_name": "Not found this check",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Not found this check",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:24+08:00"
+    "reviewed_at": "2026-10-01T20:36:36+08:00"
   },
   {
     "id": "hostwinds",
@@ -108,13 +108,13 @@
     "kind": "pricing",
     "offer_url": "https://www.hostwinds.com/vps/linux",
     "source_url": "https://www.hostwinds.com/vps/linux",
-    "fetched_at": "2026-10-01T06:36:25+00:00",
+    "fetched_at": "2026-10-01T12:36:37+00:00",
     "offer_name": "Not found this check",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Not found this check",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:25+08:00"
+    "reviewed_at": "2026-10-01T20:36:37+08:00"
   },
   {
     "id": "servarica",
@@ -124,13 +124,13 @@
     "kind": "pricing",
     "offer_url": "https://servarica.com/",
     "source_url": "https://servarica.com/",
-    "fetched_at": "2026-10-01T06:36:26+00:00",
+    "fetched_at": "2026-10-01T12:36:39+00:00",
     "offer_name": "Not found this check",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Not found this check",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:26+08:00"
+    "reviewed_at": "2026-10-01T20:36:39+08:00"
   },
   {
     "id": "servers-com",
@@ -140,13 +140,13 @@
     "kind": "pricing",
     "offer_url": "https://www.servers.com/products/cloud-servers",
     "source_url": "https://www.servers.com/products/cloud-servers",
-    "fetched_at": "2026-10-01T06:36:28+00:00",
+    "fetched_at": "2026-10-01T12:36:41+00:00",
     "offer_name": "Not found this check",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Not found this check",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:28+08:00"
+    "reviewed_at": "2026-10-01T20:36:41+08:00"
   },
   {
     "id": "cloudcone",
@@ -156,7 +156,7 @@
     "kind": "pricing",
     "offer_url": "https://cloudcone.com/vps/",
     "source_url": "https://cloudcone.com/vps/",
-    "fetched_at": "2026-10-01T06:36:29+00:00",
+    "fetched_at": "2026-10-01T12:36:43+00:00",
     "offer_name": "SSD VPS 1",
     "price_status": "Found",
     "currency_status": "Found",
@@ -165,7 +165,7 @@
     "price": "28",
     "price_display": "$28 per year",
     "currency": "USD",
-    "reviewed_at": "2026-10-01T14:36:29+08:00"
+    "reviewed_at": "2026-10-01T20:36:43+08:00"
   },
   {
     "id": "amazon-lightsail",
@@ -175,13 +175,13 @@
     "kind": "pricing",
     "offer_url": "https://aws.amazon.com/lightsail/pricing/",
     "source_url": "https://aws.amazon.com/lightsail/pricing/",
-    "fetched_at": "2026-10-01T06:36:29+00:00",
+    "fetched_at": "2026-10-01T12:36:43+00:00",
     "offer_name": "Not found this check",
     "price_status": "Not found this check",
     "currency_status": "Not found this check",
     "conditions": "Not found this check",
     "valid_until_status": "Not found this check",
-    "reviewed_at": "2026-10-01T14:36:29+08:00"
+    "reviewed_at": "2026-10-01T20:36:43+08:00"
   },
   {
     "id": "serverspace",
@@ -191,7 +191,7 @@
     "kind": "pricing",
     "offer_url": "https://serverspace.io/services/vps-server/",
     "source_url": "https://serverspace.io/services/vps-server/",
-    "fetched_at": "2026-10-01T06:36:33+00:00",
+    "fetched_at": "2026-10-01T12:36:47+00:00",
     "offer_name": "Cloud VPS",
     "price_status": "Found",
     "currency_status": "Found",
@@ -200,6 +200,6 @@
     "price": "4.1",
     "price_display": "4.1 €/mo",
     "currency": "EUR",
-    "reviewed_at": "2026-10-01T14:36:33+08:00"
+    "reviewed_at": "2026-10-01T20:36:47+08:00"
   }
 ]
